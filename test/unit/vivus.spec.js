@@ -164,6 +164,15 @@ describe('Vivus', function () {
       expect(window.XMLHttpRequest).toHaveBeenCalled();
     });
 
+    it('should accept any DOM element if `svg_string` option is set', function () {
+      var divTag = document.createElement('div');
+      divTag.id = 'my-div';
+      document.body.appendChild(divTag);
+      expect(function () {
+        new Vivus('my-div',{svg_string: '<svg></svg>'});
+      }).toThrow(new Error('Vivus [constructor]: "element" parameter is not valid (or miss the "file" attribute)'));
+    });
+
     it('should throw an error if the element is not a correct type (DOM object or string)', function () {
       expect(function () { new Vivus({}); }).toThrow(new Error('Vivus [constructor]: "element" parameter is not valid (or miss the "file" attribute)'));
       expect(function () { new Vivus(42); }).toThrow(new Error('Vivus [constructor]: "element" parameter is not valid (or miss the "file" attribute)'));

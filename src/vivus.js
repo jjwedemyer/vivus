@@ -143,6 +143,31 @@ Vivus.prototype.setElement = function (element, options) {
     return;
   }
 
+  // Load the SVG with given string
+  if (options && options.svg_string) {
+    var self = this;
+    var loader = function (str) {
+      var domSandbox = document.createElement('div');
+      domSandbox.innerHTML = str;
+
+      var svgTag = domSandbox.querySelector('svg');
+      if (!svgTag) {
+        throw new Error('Vivus [load]: Cannot find the SVG in the given string : ' + options.svg_string);
+      }
+
+      self.el = svgTag
+      self.el.setAttribute('width', '100%');
+      self.el.setAttribute('height', '100%');
+      self.parentEl.appendChild(self.el)
+      self.isReady = true;
+      self.init();
+      self = null;
+    }
+
+    loader(options.svg_string);
+    return;
+  }
+
   switch (element.constructor) {
   case window.SVGSVGElement:
   case window.SVGElement:
